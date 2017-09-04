@@ -1,3 +1,7 @@
 .bootstrap-tagsinput{
 	display: block;
 }
+.scrolly {
+    overflow-y:auto !important;
+    height: 300px;
+}

@@ -211,12 +211,11 @@ ipc.on('open-file-dialog', function (event) {
   dialog.showOpenDialog({
     properties: ['openDirectory']
   }, function (files) {
-    store.set('hexo-path', files[0]);
+    if (files) {
+      store.set('hexo-path', files[0]);
+      
+    }
   })
 })
 
-ipc.on('selected-directory', function (event, path) {
-  console.log('clicked')
-  store.set('hexo-path', path);
-})
 

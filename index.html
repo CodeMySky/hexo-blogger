@@ -18,28 +18,25 @@
       <div class="row" style="padding-top: 10%">
         <div class="col-sm-3 no-float">
           <div class="row">
-            <button id="set-path" type="button" class="btn btn-primary col-sm-4">Blog Path</button>
-            <button id="set-path" type="button" class="btn btn-primary col-sm-4">Publish</button>
-            <button id="set-path" type="button" class="btn btn-primary col-sm-4">New Blog</button>
+            <button type="button" class="set-path-btn btn btn-primary col-sm-4">Blog Path</button>
+            <button type="button" class="publish-btn btn btn-primary col-sm-4">Publish</button>
+            <button type="button" class="new-blog-btn btn btn-primary col-sm-4">New Blog</button>
           </div>
           <div class="row">
-            <div class="list-group blog-list">
+            <div class="list-group blog-list scrolly">
             </div>
           </div>
         </div>
         <div class="col-sm-9 no-float">
-          <form id='markdown-form'>
+          <form id="markdown-form">
             <div class="form-group">
-              <input id='title' class="form-control" name="title" type="text" placeholder="Title?" />
-              
+              <input class="title-input form-control" name="title" type="text" placeholder="Title?" />
             </div>
             <div class="form-group">
-              <input class="form-control tagsinput" type="text" value="" data-role="tagsinput" />
+              <input class="form-control tags-input" type="text" value="" data-role="tagsinput" />
             </div>
             
-            <textarea name="content" data-provide="markdown" rows="10"></textarea>
-            <hr/>
-            <button class="btn save-btn">Save</button>
+            <textarea id="target-editor" name="content" data-provide="markdown" rows="10"></textarea>
           </form> 
         </div>
       </div>

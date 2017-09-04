@@ -15,7 +15,8 @@
   "license": "MIT",
   "dependencies": {
     "electron-store": "~1.2.0",
-    "hexo": "~3.3.8"
+    "hexo": "~3.3.8",
+    "slugify": "~1.2.1"
   },
   "devDependencies": {
     "electron": "~1.6.2"
