@@ -13,9 +13,15 @@ var listGroup = new ListGroup($('.blog-list'));
 const ContentManager = require('./js/content-manager.js');
 
 var hexoPath = store.get('hexo-path');
+const cmd = require('node-cmd')
 
 if (hexoPath === null) {
   return $('.set-path-btn').click();
+} else {
+  console.log('cd '+hexoPath +' && npm install');
+  cmd.get('cd '+hexoPath+' && npm install', function () {
+    init();
+  });
 }
 
 var contentManager = new ContentManager(hexoPath, function (data, newPost) {
@@ -28,14 +34,18 @@ var contentManager = new ContentManager(hexoPath, function (data, newPost) {
     window.location.hash = '#' + newPost._id;
   });
 
-contentManager.load(function (data) {
+function init() {
+  // body...
+  contentManager.load(function (data) {
     console.log('data loaded, updating');
     listGroup.updateAll(data);
     if (data.length > 0) {
       listGroup.setActive(data[0]._id);
       editor.setPost(data[0])
     }
-});
+  });
+}
+
 
 const Editor = require('./js/editor.js');
 var editor = new Editor(function (updatedPost) {
@@ -51,6 +61,7 @@ window.onhashchange = function (hashchange ) {
   }
     var id = window.location.hash.substr(1);
     var post = contentManager.filterByID(id);
+    editor.change();
     editor.setPost(post);
     listGroup.setActive(id)
 }

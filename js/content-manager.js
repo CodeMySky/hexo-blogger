@@ -1,6 +1,7 @@
 'use strict'
 
 const Hexo = require('hexo');
+
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
@@ -47,16 +48,7 @@ ContentManager.prototype.load = function(callback) {
 };
 
 ContentManager.prototype.filterByID = function(id) {
-	var content = this.postList.filter(function (post) {
-		return post._id === id;
-	});
-
-	if (content) {
-		console.log(content)
-		return content[0];
-	} else {
-		return null;
-	}
+	return this.hexo.model('Post').findById(id)
 };
 
 ContentManager.prototype.createPost = function(createdPost) {
@@ -72,18 +64,26 @@ ContentManager.prototype.updatePost = function(updatedPost) {
 	that.isWriting = false;
 	if (currentPost != null & !this.isWriting) {
 		that.isWriting = true;
+		currentPost.title = updatedPost.title;
+		currentPost.setTags(updatedPost.tags.split(','));
+	
+		currentPost.thumbnail = updatedPost.thumbnail;
+		currentPost.save();
+
 		var fullContent =
 util.format(`---
 title: '%s'
 date: %s
 tags: [%s]
+thumbnail: %s
 ---
-%s`, updatedPost.title, currentPost.date.valueOf(), updatedPost.tags, updatedPost.content);
+%s`, updatedPost.title, currentPost.date.valueOf(), updatedPost.tags, updatedPost.thumbnail, updatedPost.content);
 		fs.writeFile(path.join(this.folderPath, 'source', currentPost.source),
 			fullContent, 'utf-8', function (err) {
 				that.isWriting = false;
 			});
-	} 
+	}
+	
 };
 
 ContentManager.prototype.publish = function() {

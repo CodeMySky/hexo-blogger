@@ -16,9 +16,12 @@
   "dependencies": {
     "electron-store": "~1.2.0",
     "hexo": "~3.3.8",
-    "slugify": "~1.2.1"
+    "slugify": "~1.2.1",
+    "node-cmd": "~3.0.0"
   },
   "devDependencies": {
-    "electron": "~1.6.2"
+    "electron": "~1.8.0",
+    "electron-rebuild": "^1.6.0",
+    "electron-reload": "~1.2.1"
   }
 }

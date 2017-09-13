@@ -5,3 +5,14 @@
     overflow-y:auto !important;
     height: 300px;
 }
+
+.md-editor .md-preview {
+	background-color: #32383e;
+}
+
+.md-editor .md-preview img {
+	width: 80%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
