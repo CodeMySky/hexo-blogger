@@ -1,16 +1,31 @@
 'use strict'
+'use strict';
+const Store = require('electron-store');
+const store = new Store();
+const hexoPath = store.get('hexo-path');
 
 function Editor(onChange, onCreate) {
     this.currentPost = null;
     this.titleInput = $('.title-input');
     this.tagsInput = $('.tags-input');
+    this.thumbnailInput = $('.thumbnail-input');
+    this.refreshing = false;
     this.onChange = onChange;
     this.onCreate = onCreate;
-
-    // this.titleInput.change(this.change);
-    // this.tagsInput.change(this.hange);
-
     var that = this;
+
+    this.titleInput.change(function(){
+      that.change()
+    });
+    this.tagsInput.change(function (){
+      that.change();
+    });
+    this.thumbnailInput.change(function(){
+      that.change();
+    });
+
+
+    
 
     this.titleInput.blur(function () {
       if (that.currentPost === null) {
@@ -27,44 +42,31 @@ function Editor(onChange, onCreate) {
             that.mdEditor = e;
           },
           onPreview: function(e) {
-            var previewContent
-
-            if (e.isDirty()) {
-              var originalContent = e.getContent()
-
-              previewContent = "Prepended text here..."
-                     + "\n"
-                     + originalContent
-                     + "\n"
-                     +"Apended text here..."
-            } else {
-              previewContent = "Default content"
-            }
-
-            return previewContent
-          },
-          onSave: function(e) {
-            console.log("Saving '"+e.getContent()+"'...")
+            var originalContent = e.getContent()
+            var previewContent = originalContent.replace(
+              /(!\[.*?\]\()(.+?)(\))/g, function (whole, a, b, c) {
+                return a + hexoPath + '/source' + b + c;
+              }
+            );
+            return e.parseContent(previewContent);
           },
           onChange: function(e){
             console.log("Changed!");
             that.change();
-          },
-          onFocus: function(e) {
-            console.log("Focus triggered!")
-          },
-          onBlur: function(e) {
-            console.log("Blur triggered!")
           }
         })
 }
 
 Editor.prototype.change = function() {
     var that = this;
+    if (this.refreshing) {
+      return;
+    }
     this.onChange({
                 'post': that.currentPost,
                 'title': that.titleInput.val(),
                 'tags': that.tagsInput.val(),
+                'thumbnail': that.thumbnailInput.val(),
                 'content': that.mdEditor.getContent()
             });
 };
@@ -76,10 +78,12 @@ Editor.prototype.createPost = function() {
   $('.title-input').val('')
   $('.tags-input').tagsinput('removeAll');
   $('.md-input').val('');
+  $('.thumbnailInput').val('');
 };
 
 Editor.prototype.setPost = function(post) {
-    this.currentPost = post
+    this.refreshing = true;
+    this.currentPost = post;
 
     $('.title-input').val(post.title)
     var rawContent = post.raw
@@ -97,7 +101,9 @@ Editor.prototype.setPost = function(post) {
     $('.tags-input').tagsinput('removeAll');
     post.tags.forEach(function (tag) {
         $('.tags-input').tagsinput("add",tag.name);
-    })
+    });
+    this.thumbnailInput.val(post.thumbnail);
+    this.refreshing = false;
 };
 
 module.exports = Editor;

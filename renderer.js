@@ -61,6 +61,7 @@ window.onhashchange = function (hashchange ) {
   }
     var id = window.location.hash.substr(1);
     var post = contentManager.filterByID(id);
+    editor.change();
     editor.setPost(post);
     listGroup.setActive(id)
 }
