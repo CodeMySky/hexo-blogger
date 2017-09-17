@@ -17,7 +17,6 @@
 
 .md-editor .md-preview img {
 	width: 80%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	display: block;
+	margin: 0 auto;
 }
