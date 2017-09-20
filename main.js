@@ -9,7 +9,6 @@ const url = require('url')
 
 const Menu = electron.Menu
 
-const dialog = require('electron').dialog
 
 let template = [{
   label: 'Edit',
@@ -199,23 +198,4 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-const Store = require('electron-store');
-const store = new Store();
-// store.openInEditor();
-
-
-// ipc communication
-const ipc = require('electron').ipcMain
-ipc.on('open-file-dialog', function (event) {
-  console.log('here');
-  dialog.showOpenDialog({
-    properties: ['openDirectory']
-  }, function (files) {
-    if (files) {
-      store.set('hexo-path', files[0]);
-      
-    }
-  })
-})
-
 

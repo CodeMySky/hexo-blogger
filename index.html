@@ -8,42 +8,37 @@
     <link rel="stylesheet" href="libs/bootstrap-tagsinput-latest/dist/bootstrap-tagsinput.css">
     <link rel="stylesheet" href="css/hexo-blogger.css">
     <script src="js/jquery-1.9.1.js"></script>
-    <script src="js/markdown.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="libs/toopay-bootstrap-markdown-a20ef2d/js/bootstrap-markdown.js"></script>
-    <script src="libs/bootstrap-tagsinput-latest/dist/bootstrap-tagsinput.min.js"></script>
   </head>
   <body>
     <div class="container">
       <div class="row" style="padding-top: 10%">
-        <div class="col-sm-3 no-float">
-          <div class="row">
-            <button type="button" class="set-path-btn btn btn-primary col-sm-4">Blog Path</button>
-            <button type="button" class="publish-btn btn btn-primary col-sm-4">Publish</button>
-            <button type="button" class="new-blog-btn btn btn-primary col-sm-4">New Blog</button>
-          </div>
-          <div class="row">
-            <div class="list-group blog-list scrolly">
-            </div>
+        <div class="jumbotron">
+          <h1 class="display-3">Hello, there!</h1>
+          <p class="lead">This is a simple blogger designed for hexo framework</p>
+          <hr class="my-4">
+          <p>Please select your path to the hexo root folder below.</p>
+          <div class="input-group">
+            <label class="input-group-btn">
+              <span class="btn btn-primary hexo-file-input">
+                Browse
+              </span>
+            </label>
+            
+            <input type="text" class="form-control hexo-path" readonly>
+            <label class="input-group-btn">
+              <button class="btn btn-primary go-btn">Go!</button>
+            </label>
           </div>
         </div>
-        <div class="col-sm-9 no-float">
-          <form id="markdown-form">
-            <div class="form-group">
-              <input class="title-input form-control" name="title" type="text" placeholder="Title?" />
-            </div>
-            <div class="form-row">
-              <div class="col">
-                <input class="form-control tags-input" type="text" value="" data-role="tagsinput" />
-              </div>
-              <div class="col">
-                <input class="thumbnail-input form-control" name="thumbnail" type="text" placeholder="Thumbnail" />
-              </div>
-              
-            </div>
-            
-            <textarea id="target-editor" name="content" data-provide="markdown" rows="10"></textarea>
-          </form> 
+        <div class="alert alert-danger hexo-error collapse" role="alert">
+            This is not a valid hexo path!
+        </div>
+        <div class="alert alert-success hexo-success collapse" role="alert">
+            You have successfully setup the hexo path, please continue!
+        </div>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
         </div>
       </div>
     </div>
@@ -51,6 +46,6 @@
 
   <script>
     // You can also require other files to run in this process
-    require('./renderer.js')
+    require('./splash-renderer.js')
   </script>
 </html>

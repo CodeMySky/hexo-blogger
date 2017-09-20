@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Markdown Editor</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="libs/toopay-bootstrap-markdown-a20ef2d/css/bootstrap-markdown.min.css">
+    <link rel="stylesheet" href="libs/bootstrap-tagsinput-latest/dist/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="css/hexo-blogger.css">
+    <script src="js/jquery-1.9.1.js"></script>
+    <script src="js/markdown.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="libs/bootbox.min.js"></script>
+    <script src="libs/toopay-bootstrap-markdown-a20ef2d/js/bootstrap-markdown.js"></script>
+    <script src="libs/bootstrap-tagsinput-latest/dist/bootstrap-tagsinput.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row" style="padding-top: 10%">
+        <div class="col-sm-3 no-float">
+          <div class="row">
+            <button type="button" class="set-path-btn btn btn-primary col-sm-4">Blog Path</button>
+            <button type="button" class="publish-btn btn btn-primary col-sm-4">Publish</button>
+            <button type="button" class="new-blog-btn btn btn-primary col-sm-4">New Blog</button>
+          </div>
+          <div class="row">
+            <div class="list-group blog-list scrolly">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9 no-float">
+          <form id="markdown-form">
+            <div class="form-group">
+              <input class="title-input form-control" name="title" type="text" placeholder="Title?" />
+            </div>
+            <div class="form-row">
+              <div class="col">
+                <input class="form-control tags-input" type="text" value="" data-role="tagsinput" />
+              </div>
+              <div class="col">
+                <input class="thumbnail-input form-control" name="thumbnail" type="text" placeholder="Thumbnail" />
+              </div>
+              
+            </div>
+            
+            <textarea id="target-editor" name="content" data-provide="markdown" rows="10"></textarea>
+          </form> 
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    // You can also require other files to run in this process
+    require('./renderer.js')
+  </script>
+</html>
