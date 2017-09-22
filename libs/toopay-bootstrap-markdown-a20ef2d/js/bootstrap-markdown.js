@@ -1208,7 +1208,13 @@
               chunk = selected.text;
             }
             const {dialog} = require('electron').remote;
-            var linkList = dialog.showOpenDialog({properties: ['openFile']})
+            var linkList = dialog.showOpenDialog({
+              properties: ['openFile'],
+              filters: [
+                {name: 'Images', extensions: ['jpg',' jpeg', 'png', 'gif']},
+                {name: 'All Files', extensions: ['*']}
+              ]
+            });
             if (linkList != null && linkList.length > 0) {
               var link = e.$options.onInsertImage(e, linkList[0]);
               var sanitizedLink = $('<div>' + link + '</div>').text();

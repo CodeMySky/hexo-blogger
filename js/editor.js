@@ -1,9 +1,9 @@
-'use strict'
 'use strict';
 const Store = require('electron-store');
 const store = new Store();
 const hexoPath = store.get('hexo-path');
 const pathFn = require('path');
+const fs = require('fs-extra');
 
 function Editor(onChange, onCreate) {
     this.currentPost = null;
