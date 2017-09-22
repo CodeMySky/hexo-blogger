@@ -13,38 +13,18 @@ var listGroup = new ListGroup($('.blog-list'));
 const ContentManager = require('./js/content-manager.js');
 
 var hexoPath = store.get('hexo-path');
-const cmd = require('node-cmd')
 
-if (hexoPath === null) {
-  return $('.set-path-btn').click();
-} else {
-  console.log('cd '+hexoPath +' && npm install');
-  cmd.get('cd '+hexoPath+' && npm install', function () {
-    init();
-  });
-}
+NProgress.start();
 
 var contentManager = new ContentManager(hexoPath, function (data, newPost) {
-  // onCreatePost
-   console.log('data loaded, new post');
-
+    // onCreatePost
+    console.log('data loaded, new post');
     listGroup.updateAll(data);
     listGroup.setActive(newPost._id);
     editor.setPost(newPost);
     window.location.hash = '#' + newPost._id;
   });
 
-function init() {
-  // body...
-  contentManager.load(function (data) {
-    console.log('data loaded, updating');
-    listGroup.updateAll(data);
-    if (data.length > 0) {
-      listGroup.setActive(data[0]._id);
-      editor.setPost(data[0])
-    }
-  });
-}
 
 
 const Editor = require('./js/editor.js');
@@ -67,22 +47,31 @@ window.onhashchange = function (hashchange ) {
 }
 
 
-ipc.on('update-hexo-path', function (event, path) {
-  console.log('clicked')
-  store.set('hexo-path', path);
-})
-
-
-$('.set-path-btn').click(function () {
-  alert('Please restart Hexo Blogger after set path');
-  ipc.send('open-file-dialog');
-});
-
 $('.publish-btn').click(function () {
-  contentManager.publish();
+  NProgress.start();
+  contentManager.publish(function (err) {
+    NProgress.done();
+    if (err) {
+      bootbox.alert(err);
+    } else {
+      bootbox.alert('Deployed Successfully!');
+    }
+  });
 });
 
 $('.new-blog-btn').click(function () {
   editor.createPost();
   listGroup.createPost();
+})
+
+$(document).ready(function () {
+    contentManager.load(function (data) {
+      console.log('data loaded, updating');
+      listGroup.updateAll(data);
+      if (data.length > 0) {
+        listGroup.setActive(data[0]._id);
+        editor.setPost(data[0])
+      }
+      NProgress.done()
+    });
 })
