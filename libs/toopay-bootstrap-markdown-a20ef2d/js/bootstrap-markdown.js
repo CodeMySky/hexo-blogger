@@ -1171,19 +1171,19 @@
               chunk = selected.text;
             }
 
-            link = prompt(e.__localize('Insert Hyperlink'), 'http://');
+            bootbox.prompt(e.__localize('Insert Hyperlink'), function(link) {
+              var urlRegex = new RegExp('^((http|https)://|(mailto:)|(//))[a-z0-9]', 'i');
+              if (link !== null && link !== '' && link !== 'http://' && urlRegex.test(link)) {
+                var sanitizedLink = $('<div>' + link + '</div>').text();
 
-            var urlRegex = new RegExp('^((http|https)://|(mailto:)|(//))[a-z0-9]', 'i');
-            if (link !== null && link !== '' && link !== 'http://' && urlRegex.test(link)) {
-              var sanitizedLink = $('<div>' + link + '</div>').text();
+                // transform selection and set the cursor into chunked text
+                e.replaceSelection('[' + chunk + '](' + sanitizedLink + ')');
+                cursor = selected.start + 1;
 
-              // transform selection and set the cursor into chunked text
-              e.replaceSelection('[' + chunk + '](' + sanitizedLink + ')');
-              cursor = selected.start + 1;
-
-              // Set the cursor
-              e.setSelection(cursor, cursor + chunk.length);
-            }
+                // Set the cursor
+                e.setSelection(cursor, cursor + chunk.length);
+              }
+            });
           }
         }, {
           name: 'cmdImage',
@@ -1207,11 +1207,10 @@
             } else {
               chunk = selected.text;
             }
-
-            link = prompt(e.__localize('Insert Image Hyperlink'), 'http://');
-
-            var urlRegex = new RegExp('^((http|https)://|(//))[a-z0-9]', 'i');
-            if (link !== null && link !== '' && link !== 'http://' && urlRegex.test(link)) {
+            const {dialog} = require('electron').remote;
+            var linkList = dialog.showOpenDialog({properties: ['openFile']})
+            if (linkList != null && linkList.length > 0) {
+              var link = e.$options.onInsertImage(e, linkList[0]);
               var sanitizedLink = $('<div>' + link + '</div>').text();
 
               // transform selection and set the cursor into chunked text
@@ -1499,7 +1498,8 @@
     onChange: function(e) {},
     onFullscreen: function(e) {},
     onFullscreenExit: function(e) {},
-    onSelect: function(e) {}
+    onSelect: function(e) {},
+    onInsertImage: function (e) {}
   };
 
   $.fn.markdown.Constructor = Markdown;
