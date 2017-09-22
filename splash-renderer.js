@@ -2,7 +2,8 @@ const {dialog} = require('electron').remote;
 const Store = require('electron-store');
 const store = new Store();
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
+const cmd = require('node-cmd');
 
 $('.hexo-file-input').click(function () {
   dialog.showOpenDialog({
@@ -32,6 +33,21 @@ $('.hexo-path').change(function () {
       $('.hexo-success').show();
     }
   })
+})
+
+$('.go-btn').click(function () {
+  var hexoPath = store.get('hexo-path');
+  console.log('cd '+hexoPath +' && npm install');
+  NProgress.start();
+  cmd.get('cd '+hexoPath+' && npm install', function (err) {
+    NProgress.done();
+    if (err) {
+      bootbox.alert(err);
+    } else {
+      window.location = 'editor.html'
+    }
+  });
+  
 })
 
 
