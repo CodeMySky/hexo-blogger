@@ -3,6 +3,7 @@
 const Store = require('electron-store');
 const store = new Store();
 const hexoPath = store.get('hexo-path');
+const pathFn = require('path');
 
 function Editor(onChange, onCreate) {
     this.currentPost = null;
@@ -24,17 +25,6 @@ function Editor(onChange, onCreate) {
       that.change();
     });
 
-
-    
-
-    this.titleInput.blur(function () {
-      if (that.currentPost === null) {
-        that.onCreate({
-          title: that.titleInput.val()
-        })
-      }
-    })
-
     $("#target-editor").markdown({
           savable:false,
           onShow: function(e){
@@ -53,6 +43,11 @@ function Editor(onChange, onCreate) {
           onChange: function(e){
             console.log("Changed!");
             that.change();
+          },
+          onInsertImage: function (e, link) {
+            console.log(link);
+            fs.copySync(link, pathFn.join(hexoPath, 'source', 'images', that.currentPost.slug, pathFn.basename(link)));
+            return pathFn.join('','images', that.currentPost.slug, pathFn.basename(link));
           }
         })
 }
@@ -73,12 +68,23 @@ Editor.prototype.change = function() {
 
 Editor.prototype.createPost = function() {
   // Save previous post
-  this.change();
-  this.currentPost = null;
-  $('.title-input').val('')
-  $('.tags-input').tagsinput('removeAll');
-  $('.md-input').val('');
-  $('.thumbnailInput').val('');
+  var that = this;
+  that.change();
+
+  bootbox.prompt('Please input new blog file name:', function (input) {
+    if (input) {
+      that.currentPost = null;
+      $('.title-input').val('');
+      $('.tags-input').tagsinput('removeAll');
+      $('.md-input').val('');
+      $('.thumbnailInput').val('');
+      that.onCreate({
+        title: input
+      });
+    } else {
+      bootbox.alert('filename is empty');
+    }
+  });
 };
 
 Editor.prototype.setPost = function(post) {
