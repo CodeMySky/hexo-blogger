@@ -4,6 +4,7 @@ const store = new Store();
 const hexoPath = store.get('hexo-path');
 const pathFn = require('path');
 const fs = require('fs-extra');
+const {dialog} = require('electron').remote;
 
 function Editor(onChange, onCreate) {
     this.currentPost = null;
@@ -23,6 +24,18 @@ function Editor(onChange, onCreate) {
     });
     this.thumbnailInput.change(function(){
       that.change();
+    });
+    $('.thumbnail-file-input').click(function () {
+      dialog.showOpenDialog({
+        properties: ['openFile']
+      }, function (files) {
+        if (files) {
+          var file = files[0];
+          fs.copySync(file, pathFn.join(hexoPath, 'source', 'images', that.currentPost.slug, 'thumbnail.'+pathFn.extname(file)));
+          $('.thumbnail-input').val(pathFn.join('/images', that.currentPost.slug, 'thumbnail'+pathFn.extname(file)));
+          $('.thumbnail-input').change();
+        }
+      })
     });
 
     $("#target-editor").markdown({
