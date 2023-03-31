@@ -21,7 +21,7 @@
     "fs-extra": "~4.0.2"
   },
   "devDependencies": {
-    "electron": "~1.8.0",
+    "electron": "~18.3.7",
     "electron-rebuild": "^1.6.0",
     "electron-reload": "~1.2.1"
   }
